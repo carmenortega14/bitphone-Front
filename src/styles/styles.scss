@@ -1,2 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
-@import "tailwindcss";
+@use "tailwindcss";
+
+/* En tu app.component.scss */
+:host {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+
+app-header {
+  grid-row: 1;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+router-outlet {
+  grid-row: 2;
+}
+
+app-footer {
+  grid-row: 3;
+}
