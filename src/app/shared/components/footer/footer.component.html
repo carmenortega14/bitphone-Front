@@ -1,1 +1,198 @@
-<p>footer works!</p>
+<!-- Main Footer -->
+<footer class="main-footer">
+  <!-- Footer Content -->
+  <div class="footer-container">
+    <div class="footer-grid">
+      <!-- Company Info -->
+      <div class="company-info">
+        <div class="logo-wrapper">
+          <div class="logo-icon">
+            <svg class="logo-svg" viewBox="0 0 20 20">
+              <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1V8a1 1 0 00-1-1h-3z"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="company-name">BitPhoneStore</h3>
+            <p class="company-slogan">Tu tienda de confianza</p>
+          </div>
+        </div>
+        
+        <p class="company-description">
+          Más de 10 años ofreciendo los mejores smartphones y accesorios con garantía oficial y envíos gratuitos a toda Colombia.
+        </p>
+        
+        <!-- Contact Info -->
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon email-icon">
+              <svg class="icon" viewBox="0 0 20 20">
+                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+              </svg>
+            </div>
+            <span class="contact-text">infobitphone.com</span>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon phone-icon">
+              <svg class="icon" viewBox="0 0 20 20">
+                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+              </svg>
+            </div>
+            <span class="contact-text">+57 300 123 4567</span>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon location-icon">
+              <svg class="icon" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <span class="contact-text">Bogotá, Colombia</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Quick Links -->
+      <div class="footer-column">
+        <h4 class="footer-column-title">
+          <svg class="title-icon" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+          Enlaces Rápidos
+        </h4>
+        <ul class="footer-links">
+          <li *ngFor="let link of quickLinks">
+            <a [href]="link.url" class="footer-link">
+              <svg class="link-arrow" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+              </svg>
+              {{link.name}}
+            </a>
+          </li>
+        </ul>
+      </div>
+      
+      <!-- Categories -->
+      <div class="footer-column">
+        <h4 class="footer-column-title">
+          <svg class="title-icon" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14-7l2 2-2 2M5 13l-2-2 2-2"/>
+          </svg>
+          Categorías
+        </h4>
+        <ul class="footer-links">
+          <li *ngFor="let category of categories">
+            <a [href]="category.url" class="footer-link">
+              <svg class="link-arrow" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+              </svg>
+              {{category.name}}
+            </a>
+          </li>
+        </ul>
+      </div>
+      
+      <!-- Customer Service -->
+      <div class="footer-column">
+        <h4 class="footer-column-title">
+          <svg class="title-icon" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
+          </svg>
+          Atención al Cliente
+        </h4>
+        <ul class="footer-links">
+          <li *ngFor="let service of customerService">
+            <a [href]="service.url" class="footer-link">
+              <svg class="link-arrow" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+              </svg>
+              {{service.name}}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Social Media & Payment Methods -->
+  <div class="footer-middle">
+    <div class="footer-container">
+      <div class="middle-content">
+        <!-- Social Media -->
+        <div class="social-media">
+          <h4 class="middle-title">Síguenos en redes sociales</h4>
+          <div class="social-icons">
+            <a *ngFor="let social of socialLinks" 
+               [href]="social.url" 
+               target="_blank"
+               class="social-icon">
+              <svg class="social-svg" [attr.aria-label]="social.name" viewBox="0 0 24 24">
+                <path [attr.d]="social.icon"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Payment Methods -->
+        <div class="payment-methods">
+          <h4 class="middle-title">Métodos de pago seguros</h4>
+          <div class="payment-icons">
+            <div *ngFor="let payment of paymentMethods" class="payment-icon">
+              <div class="payment-box">
+                <span class="payment-text">{{payment.name.slice(0, 4)}}</span>
+              </div>
+            </div>
+          </div>
+          <p class="payment-security">
+            🔒 Compras 100% seguras con SSL
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Bottom Footer -->
+  <div class="footer-bottom">
+    <div class="footer-container">
+      <div class="bottom-content">
+        <div class="copyright">
+          <p class="copyright-text">
+            © {{currentYear}} BitPhone. Todos los derechos reservados.
+          </p>
+          <p class="developer-text">
+            Desarrollado con ❤️ para los amantes de la tecnología
+          </p>
+        </div>
+        
+        <div class="footer-features">
+          <div class="feature-item warranty">
+            <svg class="feature-icon" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+            <span class="feature-text">Garantía oficial</span>
+          </div>
+          
+          <div class="feature-item shipping">
+            <svg class="feature-icon" viewBox="0 0 20 20">
+              <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/>
+              <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1V8a1 1 0 00-1-1h-3z"/>
+            </svg>
+            <span class="feature-text">Envío gratis</span>
+          </div>
+          
+          <!-- Back to Top Button -->
+          <button 
+            (click)="scrollToTop()"
+            class="back-to-top"
+            aria-label="Volver arriba"
+          >
+            <svg class="top-arrow" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
