@@ -17,7 +17,7 @@ export class FooterComponent implements OnInit {
     { name: 'Productos', url: '/productos' },
     { name: 'Ofertas', url: '/ofertas' },
     { name: 'Sobre Nosotros', url: '/nosotros' },
-    { name: 'Contacto', url: '/contacto' }
+    { name: 'Contacto', url: '/newsletter' }
   ];
 
   categories = [
