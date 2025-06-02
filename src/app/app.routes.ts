@@ -23,13 +23,12 @@ export const routes: Routes = [
     },
     {
         path: 'adminpanel', component: AdminpanelComponent,
-        // canActivate: [canActivateAuthRole],
-        // data: {
-        //     roles: ['admin']
-        // },
+        canActivate: [canActivateAuthRole],
+        data: {
+            roles: ['admin']
+        },
     },
     { path: 'smartphones', component: SmartphonesComponent },
-    // { path: 'DetailSmartphone', component: DetailSmartphonesComponent },
     { path: 'DetailSmartphone/:id', component: DetailSmartphonesComponent },
     { path: 'newsletter', component: NewsletterComponent },
     { path: '*', redirectTo: '/home' }
