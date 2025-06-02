@@ -1,0 +1,50 @@
+<div class="detalle-container" *ngIf="celular">
+  <!-- Modal para imagen ampliada -->
+  <div class="modal-imagen" *ngIf="mostrarModal" (click)="cerrarModal()">
+    <div class="modal-contenido" (click)="$event.stopPropagation()">
+      <span class="cerrar-modal" (click)="cerrarModal()">&times;</span>
+      <img [src]="celular.imagenUrl || 'assets/imagen-placeholder.jpg'" 
+           [alt]="celular.modelo"
+           class="imagen-ampliada">
+    </div>
+  </div>
+
+  <div class="detalle-imagen">
+    <img [src]="celular.imagenUrl || 'assets/imagen-placeholder.jpg'" 
+         [alt]="celular.modelo"
+         class="imagen-principal"
+         (click)="abrirModal()">
+  </div>
+  
+  <!-- Resto del código permanece igual -->
+  <div class="detalle-info">
+    <h1>{{ celular.modelo }}</h1>
+    <p class="marca">{{ celular.marca.nombre }}</p>
+    <p class="precio">{{ celular.precio | currency }}</p>
+    
+    <div class="especificaciones">
+      <h3>Especificaciones</h3>
+      <ul>
+        <li><strong>Sistema Operativo:</strong> {{ celular.sistemaOperativo }}</li>
+        <li><strong>Almacenamiento:</strong> {{ celular.almacenamiento }} GB</li>
+        <li><strong>RAM:</strong> {{ celular.ram }} GB</li>
+        <li><strong>Pantalla:</strong> {{ celular.pantalla }}"</li>
+        <li><strong>Color:</strong> {{ celular.color }}</li>
+        <li><strong>Stock disponible:</strong> {{ celular.stock }}</li>
+      </ul>
+      
+      <p class="descripcion">{{ celular.descripcion }}</p>
+    </div>
+    
+    <div class="acciones">
+      <button class="btn-comprar" (click)="comprarAhora()">Comprar Ahora</button>
+      <button class="btn-carrito" (click)="agregarAlCarrito()">
+        <i class="fas fa-shopping-cart"></i> Añadir al Carrito
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!celular" class="cargando">
+  <p>Cargando información del celular...</p>
+</div>
