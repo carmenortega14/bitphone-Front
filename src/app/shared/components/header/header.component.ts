@@ -3,7 +3,7 @@ import { Component, OnInit, HostListener, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakAngularModule } from 'keycloak-angular';
-import { ProductService } from '../../../../app/shared/services/product.service';
+import { ProductService } from '../../../core/services/product.service';
 
 @Component({
   selector: 'app-header',

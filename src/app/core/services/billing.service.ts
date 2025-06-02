@@ -3,7 +3,7 @@ import {
   AngularFireObject,
   AngularFireDatabase,
 } from "@angular/fire/database";
-import { Billing } from "./../models/billing";
+import { Billing } from "../../shared/models/billing";
 import { Injectable } from "@angular/core";
 
 @Injectable({

@@ -4,7 +4,7 @@ import { SmartphonesComponent } from './features/smartphones/smartphones.compone
 import { NewsletterComponent } from './shared/components/newsletter/newsletter.component';
 import { InfousuarioComponent } from './features/infousuario/infousuario.component';
 import { AdminpanelComponent } from './features/adminpanel/adminpanel.component';
-import { canActivateAuthRole } from './guards/auth.guard';
+import { canActivateAuthRole } from './core/guards/auth.guard';
 import { DetailSmartphonesComponent } from './features/detail-smartphones/detail-smartphones.component';
 
 export const routes: Routes = [

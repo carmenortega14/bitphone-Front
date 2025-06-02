@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { ProductService } from '../../../app/shared/services/product.service';
+import { ProductService } from '../../core/services/product.service';
 import { CommonModule } from '@angular/common';
 
 
