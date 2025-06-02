@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Product } from "../../shared/models/product";
-import { ProductService } from "../../shared/services/product.service";
-import { ToastrService } from "../../shared/services/toastr.service";
+import { ProductService } from "../../core/services/product.service";
+import { ToastrService } from "../../core/services/toastr.service";
 import { FilterByBrandPipe } from "../../shared/pipes/filterByBrand.pipe";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";

@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { ServiceBase } from './service-base';
 import { environment } from '../../environments/environment';
 
-import { Product } from "../models/product";
+import { Product } from "../../shared/models/product";
 import { ToastrService } from "./toastr.service";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";

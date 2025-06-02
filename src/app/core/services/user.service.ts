@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { AngularFireDatabase, AngularFireList } from "@angular/fire/database";
 
 import * as moment from "moment";
-import { User } from "../models/user";
+import { User } from "../../shared/models/user";
 
 @Injectable()
 export class UserService {
