@@ -1,0 +1,37 @@
+<div class="celulares-container">
+  <!-- Filtros -->
+  <div class="filtros-container">
+    <h2>Catálogo de Celulares</h2>
+    <div class="filtro-marca">
+      <label for="filtroMarca">Filtrar por marca:</label>
+      <select id="filtroMarca" (change)="filtrarPorMarca($event)">
+        <option value="">Todas las marcas</option>
+        <option *ngFor="let marca of marcas" [value]="marca.id">{{ marca.nombre }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Mensaje cuando no hay resultados -->
+  <div *ngIf="celularesFiltrados.length === 0" class="no-resultados">
+    <p>No se encontraron celulares con los filtros seleccionados</p>
+  </div>
+
+  <!-- Listado de celulares -->
+  <div class="grid-celulares">
+    <div *ngFor="let celular of celularesFiltrados" class="celular-card" 
+         (click)="verDetalle(celular.id)">
+      <div class="imagen-container">
+        <img [src]="celular.imagenUrl || 'assets/imagen-placeholder.jpg'" 
+             [alt]="celular.modelo"
+             class="celular-imagen"
+             (mouseenter)="hoverImagen($event)"
+             (mouseleave)="hoverImagen($event)">
+      </div>
+      <div class="celular-info">
+        <h3>{{ celular.modelo }}</h3>
+        <p class="marca">{{ celular.marca.nombre }}</p>
+        <p class="precio">{{ celular.precio | currency }}</p>
+      </div>
+    </div>
+  </div>
+</div>
