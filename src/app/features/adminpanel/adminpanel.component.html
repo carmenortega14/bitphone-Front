@@ -1,0 +1,238 @@
+<div class="form-container">
+    <h2>Administrar Productos</h2>
+
+    <!-- Tabs para navegar entre formularios -->
+    <div class="tabs">
+        <button (click)="currentTab = 'celular'" [class.active]="currentTab === 'celular'">Nuevo Celular</button>
+        <button (click)="currentTab = 'actualizar-celular'" [class.active]="currentTab === 'actualizar-celular'">Actualizar Celular</button>
+        <button (click)="currentTab = 'marca'" [class.active]="currentTab === 'marca'">Nueva Marca</button>
+        <button (click)="currentTab = 'categoria'" [class.active]="currentTab === 'categoria'">Nueva Categoría</button>
+    </div>
+
+    <!-- Formulario para Celulares -->
+    <form *ngIf="currentTab === 'celular'" (ngSubmit)="onSubmitCelular()" #celularForm="ngForm" class="form-section">
+        <div class="form-group">
+            <label for="modelo">Modelo:</label>
+            <input type="text" id="modelo" name="modelo" [(ngModel)]="nuevoCelular.modelo" required>
+        </div>
+
+        <div class="form-group">
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" name="descripcion" [(ngModel)]="nuevoCelular.descripcion"></textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="precio">Precio:</label>
+                <input type="number" id="precio" name="precio" [(ngModel)]="nuevoCelular.precio" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label for="stock">Stock:</label>
+                <input type="number" id="stock" name="stock" [(ngModel)]="nuevoCelular.stock" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="marca">Marca:</label>
+                <select id="marca" name="marca" [(ngModel)]="nuevoCelular.marcaId" required>
+                    <option value="" disabled selected>Seleccione una marca</option>
+                    <option *ngFor="let marca of marcas" [value]="marca.id">{{ marca.nombre }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="categorias">Categorías:</label>
+                <select id="categorias" name="categorias" [(ngModel)]="nuevoCelular.categoriaIds" multiple>
+                    <option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.nombre }}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="color">Color:</label>
+                <input type="text" id="color" name="color" [(ngModel)]="nuevoCelular.color">
+            </div>
+
+            <div class="form-group">
+                <label for="imagen">Imagen del Celular:</label>
+                <input type="file" id="imagen" (change)="onFileSelected($event)" accept="image/*">
+                <small *ngIf="selectedFile">Archivo seleccionado: {{selectedFile.name}}</small>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="almacenamiento">Almacenamiento (GB):</label>
+                <input type="number" id="almacenamiento" name="almacenamiento" [(ngModel)]="nuevoCelular.almacenamiento"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="ram">RAM (GB):</label>
+                <input type="number" id="ram" name="ram" [(ngModel)]="nuevoCelular.ram" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="pantalla">Pantalla (pulgadas):</label>
+                <input type="number" id="pantalla" name="pantalla" [(ngModel)]="nuevoCelular.pantalla" step="0.1"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="sistemaOperativo">Sistema Operativo:</label>
+                <input type="text" id="sistemaOperativo" name="sistemaOperativo"
+                    [(ngModel)]="nuevoCelular.sistemaOperativo" required>
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="!celularForm.valid">Guardar Celular</button>
+    </form>
+
+    <!-- Nuevo Formulario para Actualizar Celular -->
+    <div *ngIf="currentTab === 'actualizar-celular'" class="form-section">
+        <div class="form-group">
+            <label for="selectCelular">Seleccionar Celular:</label>
+            <select id="selectCelular" [(ngModel)]="celularSeleccionadoId" (change)="cargarCelularParaEditar()">
+                <option value="" disabled selected>Seleccione un celular</option>
+                <option *ngFor="let cel of celulares" [value]="cel.id">{{ cel.modelo }} ({{ cel.marca?.nombre }})</option>
+            </select>
+        </div>
+
+        <form *ngIf="celularParaEditar" (ngSubmit)="onActualizarCelular()" #actualizarCelularForm="ngForm">
+            <div class="form-group">
+                <label for="modeloEditar">Modelo:</label>
+                <input type="text" id="modeloEditar" name="modeloEditar" [(ngModel)]="celularParaEditar.modelo" required>
+            </div>
+
+            <div class="form-group">
+                <label for="descripcionEditar">Descripción:</label>
+                <textarea id="descripcionEditar" name="descripcionEditar" [(ngModel)]="celularParaEditar.descripcion"></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="precioEditar">Precio:</label>
+                    <input type="number" id="precioEditar" name="precioEditar" [(ngModel)]="celularParaEditar.precio" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="stockEditar">Stock:</label>
+                    <input type="number" id="stockEditar" name="stockEditar" [(ngModel)]="celularParaEditar.stock" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="marcaEditar">Marca:</label>
+                    <select id="marcaEditar" name="marcaEditar" [(ngModel)]="celularParaEditar.marcaId" required>
+                        <option *ngFor="let marca of marcas" [value]="marca.id">{{ marca.nombre }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="categoriasEditar">Categorías:</label>
+                    <select id="categoriasEditar" name="categoriasEditar" [(ngModel)]="celularParaEditar.categoriaIds" multiple>
+                        <option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.nombre }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="colorEditar">Color:</label>
+                    <input type="text" id="colorEditar" name="colorEditar" [(ngModel)]="celularParaEditar.color">
+                </div>
+
+                <div class="form-group">
+                    <label for="imagenEditar">Imagen del Celular:</label>
+                    <input type="file" id="imagenEditar" (change)="onFileSelectedEditar($event)" accept="image/*">
+                    <div *ngIf="celularParaEditar.imagenUrl" class="imagen-preview">
+                        <img [src]="celularParaEditar.imagenUrl" alt="Imagen actual">
+                        <small>Imagen actual</small>
+                    </div>
+                    <small *ngIf="selectedFileEditar">Nueva imagen seleccionada: {{selectedFileEditar.name}}</small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="almacenamientoEditar">Almacenamiento (GB):</label>
+                    <input type="number" id="almacenamientoEditar" name="almacenamientoEditar" [(ngModel)]="celularParaEditar.almacenamiento" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ramEditar">RAM (GB):</label>
+                    <input type="number" id="ramEditar" name="ramEditar" [(ngModel)]="celularParaEditar.ram" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pantallaEditar">Pantalla (pulgadas):</label>
+                    <input type="number" id="pantallaEditar" name="pantallaEditar" [(ngModel)]="celularParaEditar.pantalla" step="0.1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="sistemaOperativoEditar">Sistema Operativo:</label>
+                    <input type="text" id="sistemaOperativoEditar" name="sistemaOperativoEditar" [(ngModel)]="celularParaEditar.sistemaOperativo" required>
+                </div>
+            </div>
+
+            <button type="submit" [disabled]="!actualizarCelularForm.valid">Actualizar Celular</button>
+        </form>
+    </div>
+
+    <!-- Formulario para Marcas -->
+    <form *ngIf="currentTab === 'marca'" (ngSubmit)="onSubmitMarca()" #marcaForm="ngForm" class="form-section">
+        <div class="form-group">
+            <label for="nombreMarca">Nombre:</label>
+            <input type="text" id="nombreMarca" name="nombreMarca" [(ngModel)]="nuevaMarca.nombre" required>
+        </div>
+
+        <div class="form-group">
+            <label for="descripcionMarca">Descripción:</label>
+            <textarea id="descripcionMarca" name="descripcionMarca" [(ngModel)]="nuevaMarca.descripcion"></textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="paisOrigen">País de Origen:</label>
+                <input type="text" id="paisOrigen" name="paisOrigen" [(ngModel)]="nuevaMarca.paisOrigen">
+            </div>
+
+            <div class="form-group">
+                <label for="fechaFundacion">Fecha de Fundación:</label>
+                <input type="date" id="fechaFundacion" name="fechaFundacion" [(ngModel)]="nuevaMarca.fechaFundacion">
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="!marcaForm.valid">Guardar Marca</button>
+    </form>
+
+    <!-- Formulario para Categorías -->
+    <form *ngIf="currentTab === 'categoria'" (ngSubmit)="onSubmitCategoria()" #categoriaForm="ngForm"
+        class="form-section">
+        <div class="form-group">
+            <label for="nombreCategoria">Nombre:</label>
+            <input type="text" id="nombreCategoria" name="nombreCategoria" [(ngModel)]="nuevaCategoria.nombre" required>
+        </div>
+
+        <div class="form-group">
+            <label for="descripcionCategoria">Descripción:</label>
+            <textarea id="descripcionCategoria" name="descripcionCategoria"
+                [(ngModel)]="nuevaCategoria.descripcion"></textarea>
+        </div>
+
+        <button type="submit" [disabled]="!categoriaForm.valid">Guardar Categoría</button>
+    </form>
+
+    <!-- Mensajes de éxito/error -->
+    <div *ngIf="mensaje" class="mensaje" [class.error]="esError">
+        {{ mensaje }}
+    </div>
+</div>
