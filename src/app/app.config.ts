@@ -19,7 +19,8 @@ export const appConfig: ApplicationConfig = {
       },
       initOptions: {
         onLoad: environment.keycloak.initOptions.onLoad as KeycloakOnLoad,
-        checkLoginIframe: environment.keycloak.initOptions.checkLoginIframe
+        checkLoginIframe: environment.keycloak.initOptions.checkLoginIframe,
+        silentCheckSsoRedirectUri: environment.keycloak.initOptions.silentCheckSsoRedirectUri,
       }
     }),
     provideZoneChangeDetection({ eventCoalescing: true }),
