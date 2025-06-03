@@ -41,12 +41,12 @@ export class DetailSmartphonesComponent implements OnInit {
 
   abrirModal(): void {
     this.mostrarModal = true;
-    document.body.style.overflow = 'hidden'; // Deshabilita el scroll
+    // document.body.style.overflow = 'hidden'; // Deshabilita el scroll
   }
 
   cerrarModal(): void {
     this.mostrarModal = false;
-    document.body.style.overflow = ''; // Habilita el scroll nuevamente
+    // document.body.style.overflow = ''; // Habilita el scroll nuevamente
   }
 
 
@@ -131,11 +131,11 @@ export class DetailSmartphonesComponent implements OnInit {
     });
 
     this.mostrarModalCarrito = true;
-    document.body.style.overflow = 'hidden';
+    // document.body.style.overflow = 'hidden';
   }
 
   cerrarModalCarrito(): void {
     this.mostrarModalCarrito = false;
-    document.body.style.overflow = '';
+    // document.body.style.overflow = '';
   }
 }

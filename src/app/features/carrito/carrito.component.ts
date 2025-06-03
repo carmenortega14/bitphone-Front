@@ -76,7 +76,7 @@ export class CarritoComponent implements OnInit {
     }
 
     const pedido = {
-      clienteId: 1, // Obtener del servicio de autenticación
+      clienteId: 2, // Obtener del servicio de autenticación
       items: this.items.map(item => ({
         celularId: item.celularId,
         cantidad: item.cantidad,
