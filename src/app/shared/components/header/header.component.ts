@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakAngularModule } from 'keycloak-angular';
 import { ProductService } from '../../../core/services/product.service';
-import { AuthService } from '../../../core/services/auth.service';
+// import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -37,7 +37,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     private router: Router,
     public ProductService: ProductService,
-    private authService: AuthService,
+    // private authService: AuthService,
     private keycloakServicee: KeycloakService
   ) { }
 
@@ -49,11 +49,11 @@ export class HeaderComponent implements OnInit {
 
     this.cartItemCount = this.ProductService.getCartItemCount();
 
-    const isAuthenticated = await this.authService.isAuthenticated();
-    if (isAuthenticated) {
-      this.username = this.authService.getUsername();
-      this.isAdmin = this.authService.isAdmin();
-    }
+      // this.isAdmin = this.authService.isAdmin();
+    // const isAuthenticated = await this.authService.isAuthenticated();
+    // if (isAuthenticated) {
+    //   this.username = this.authService.getUsername();
+    // }
   }
 
   brands: string[] = [];

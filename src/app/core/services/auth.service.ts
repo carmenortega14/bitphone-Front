@@ -75,7 +75,7 @@ export class AuthService {
     return this.keycloakService.getUserRoles().includes('Admin');
   }
 
-  isAuthenticated(): boolean {
-    return this.keycloakService.isLoggedIn();
-  }
+  // isAuthenticated(): boolean {
+  //   return this.keycloakService.isLoggedIn();
+  // }
 }
