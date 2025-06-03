@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 import { Product } from "../../shared/models/product";
 import { ToastrService } from "./toastr.service";
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { BehaviorSubject, map, Observable } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,9 @@ export class ProductService extends ServiceBase {
     super(http);
     this.ApiUrl = [environment.ApiUrl].join('/');
   }
+
+  private carritoItems: any[] = [];
+  private carrito = new BehaviorSubject<any[]>([]);
 
   /** ----------------------------------------------------------------------------------------------------- */
 
@@ -145,9 +148,31 @@ export class ProductService extends ServiceBase {
     return this.http.post<any>(url, pedido);
   }
 
-  obtenerPedidos(): Observable<any[]> {
-    const url = `${this.ApiUrl}/pedidos`;
-    return this.http.get<any[]>(url);
+  obtenerPedidos() {
+    return this.http.get<any[]>(`${this.ApiUrl}/pedidos`).pipe(
+      map(pedidos => this.procesarUrlsImagenes(pedidos))
+    );
+  }
+
+  private procesarUrlsImagenes(pedidos: any[]): any[] {
+    return pedidos.map(pedido => {
+      if (pedido.items) {
+        pedido.items = pedido.items.map((item: any) => {
+          if (item.celular?.imagenUrl) {
+            item.celular.imagenUrl = this.fixImageUrl(item.celular.imagenUrl);
+          }
+          return item;
+        });
+      }
+      return pedido;
+    });
+  }
+
+  private fixImageUrl(url: string): string {
+    if (!url) return 'assets/default-phone.png';
+    if (url.startsWith('http')) return url;
+    if (url.startsWith('/uploads')) return `${environment.ApiUrl}${url}`;
+    return url;
   }
 
   obtenerPedidoPorId(id: number): Observable<any> {
@@ -158,6 +183,69 @@ export class ProductService extends ServiceBase {
   actualizarPedido(id: number, pedido: any): Observable<any> {
     const url = `${this.ApiUrl}/pedidos/${id}`;
     return this.http.put<any>(url, pedido);
+  }
+
+  carrito$ = this.carrito.asObservable();
+
+  agregarAlCarrito(item: any): void {
+    const itemExistente = this.carritoItems.find(i => i.celularId === item.celularId);
+
+    if (itemExistente) {
+      itemExistente.cantidad += item.cantidad;
+    } else {
+      this.carritoItems.push(item);
+    }
+
+    this.guardarCarrito();
+    this.carrito.next([...this.carritoItems]);
+  }
+
+  private guardarCarrito(): void {
+    localStorage.setItem('carrito', JSON.stringify(this.carritoItems));
+  }
+
+  private cargarCarrito(): void {
+    const carritoGuardado = localStorage.getItem('carrito');
+    if (carritoGuardado) {
+      this.carritoItems = JSON.parse(carritoGuardado);
+      this.carrito.next([...this.carritoItems]);
+    }
+  }
+
+  actualizarStockCelular(celularId: number, nuevoStock: number): Observable<any> {
+    const url = `${this.ApiUrl}/celulares/${celularId}/stock`;
+    return this.http.patch(url, { stock: nuevoStock });
+  }
+
+  eliminarDelCarrito(celularId: number): void {
+    this.carritoItems = this.carritoItems.filter(item => item.celularId !== celularId);
+    this.guardarCarrito();
+    this.carrito.next([...this.carritoItems]);
+  }
+
+  actualizarItem(itemActualizado: any): void {
+    const index = this.carritoItems.findIndex(item => item.celularId === itemActualizado.celularId);
+    if (index !== -1) {
+      this.carritoItems[index] = itemActualizado;
+      this.guardarCarrito();
+      this.carrito.next([...this.carritoItems]);
+    }
+  }
+
+  getCartItemCount(): number {
+    return this.carritoItems.reduce((total, item) => total + item.cantidad, 0);
+  }
+
+  // En cart.service.ts
+  getCantidadEnCarrito(celularId: number): number {
+    const item = this.carritoItems.find(i => i.celularId === celularId);
+    return item ? item.cantidad : 0;
+  }
+
+  vaciarCarrito(): void {
+    this.carritoItems = [];
+    this.guardarCarrito();
+    this.carrito.next([...this.carritoItems]);
   }
 }
 
