@@ -25,7 +25,7 @@ export const environment = {
             clientId: 'bitphone-client'
         },
         initOptions: {
-            onLoad: 'check-sso', // Cambiar de 'login-required' a 'check-sso'
+            onLoad: 'login-required', // Cambiar de 'login-required' a 'check-sso'
             silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
             checkLoginIframe: false,
             pkceMethod: 'S256' // Habilitar PKCE para mayor seguridad
