@@ -1,97 +1,81 @@
-import { Injectable } from "@angular/core";
-import { AngularFireAuth } from "@angular/fire/auth";
-import { Router } from "@angular/router";
-import * as firebase from "firebase/app";
-import { BehaviorSubject, Observable } from "rxjs";
-import { filter, map } from "rxjs/operators";
+// // auth.service.ts - Versión ultra-simplificada
+// import { Injectable } from '@angular/core';
+// import Keycloak from 'keycloak-js';
 
-import { User } from "../../shared/models/user";
-import { UserService } from "./user.service";
+// @Injectable({
+//   providedIn: 'root'
+// })
+// export class AuthService {
+//   private keycloak: Keycloak | undefined;
 
-export const ANONYMOUS_USER: User = new User();
+//   async init(): Promise<boolean> {
+//     this.keycloak = new Keycloak({
+//       url: 'http://localhost:8081/',
+//       realm: 'bitphone',
+//       clientId: 'bitphone-client',
+//     });
 
-@Injectable()
+//     try {
+//       // Configuración mínima que evita problemas de iframe
+//       const authenticated = await this.keycloak.init({
+//         onLoad: 'check-sso', // Cambiado de 'login-required' a 'check-sso'
+//         silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
+//         checkLoginIframe: false,
+//         checkLoginIframeInterval: 0,
+//       });
+
+//       if (!authenticated) {
+//         // Si no está autenticado, hacer login manual
+//         console.log('Usuario no autenticado, redirigiendo al login...');
+//         this.keycloak.login();
+//         return false;
+//       }
+
+//       console.log('Usuario autenticado correctamente');
+//       return true;
+
+//     } catch (error) {
+//       console.error('Error en inicialización de Keycloak:', error);
+//       // En caso de error, intentar login directo
+//       this.keycloak.login();
+//       return false;
+//     }
+//   }
+
+//   logout(): void {
+//     this.keycloak?.logout({
+//       redirectUri: window.location.origin
+//     });
+//   }
+
+//   getToken(): string | undefined {
+//     return this.keycloak?.token;
+//   }
+
+//   isAuthenticated(): boolean {
+//     return this.keycloak?.authenticated || false;
+//   }
+// }
+
+
+import { Injectable } from '@angular/core';
+import { KeycloakService } from 'keycloak-angular';
+
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
-  user: Observable<firebase.User>;
+  constructor(private keycloakService: KeycloakService) { }
 
-  private subject = new BehaviorSubject<User>(undefined);
-
-  user$: Observable<User> = this.subject
-    .asObservable()
-    .pipe(filter((user) => !!user));
-
-  isLoggedIn$: Observable<boolean> = this.user$.pipe(
-    map((user) => !!user.$key)
-  );
-
-  isLoggedOut$: Observable<boolean> = this.isLoggedIn$.pipe(
-    map((isLoggedIn) => !isLoggedIn)
-  );
-
-  isAdmin$: Observable<boolean> = this.user$.pipe(
-    map((user) => !!user.isAdmin)
-  );
-
-  constructor(
-    private firebaseAuth: AngularFireAuth,
-    private router: Router,
-    private userService: UserService
-  ) {
-    this.user = firebaseAuth.authState;
-
-    this.user.subscribe((user) => {
-      console.log({ user });
-      if (user) {
-        this.userService
-          .isAdmin(user.email)
-          .snapshotChanges()
-          .subscribe((data) => {
-            if (!data.length) {
-              this.subject.next(ANONYMOUS_USER);
-              return;
-            }
-
-            data.forEach((el) => {
-              const y: any = el.payload.toJSON();
-              console.log({ y });
-              this.subject.next({
-                $key: y.uid || y.id,
-                userName: user.displayName || "Anonymous User",
-                emailId: y.email,
-                phoneNumber: user.phoneNumber,
-                avatar: user.photoURL,
-                isAdmin: y.isAdmin,
-              });
-            });
-          });
-      } else {
-        this.subject.next(ANONYMOUS_USER);
-      }
-    });
+  getUsername(): string {
+    return this.keycloakService.getUsername();
   }
 
-  logout() {
-    this.firebaseAuth.signOut().then((res) => {
-      this.subject.next(ANONYMOUS_USER);
-      this.router.navigate(["/"]);
-    });
+  isAdmin(): boolean {
+    return this.keycloakService.getUserRoles().includes('Admin');
   }
 
-  createUserWithEmailAndPassword(emailID: string, password: string) {
-    return this.firebaseAuth.createUserWithEmailAndPassword(emailID, password);
-  }
-
-  signInRegular(email: string, password: string) {
-    const credential = firebase.auth.EmailAuthProvider.credential(
-      email,
-      password
-    );
-    return this.firebaseAuth.signInWithEmailAndPassword(email, password);
-  }
-
-  signInWithGoogle() {
-    return this.firebaseAuth.signInWithPopup(
-      new firebase.auth.GoogleAuthProvider()
-    );
+  isAuthenticated(): boolean {
+    return this.keycloakService.isLoggedIn();
   }
 }
