@@ -1,0 +1,68 @@
+<div class="carrito-container">
+  <h1>Tu Carrito de Compras</h1>
+  
+  <div *ngIf="items.length === 0" class="carrito-vacio">
+    <p>Tu carrito está vacío</p>
+    <button routerLink="/productos" class="btn-continuar">Continuar comprando</button>
+  </div>
+
+  <div *ngIf="items.length > 0">
+    <div class="carrito-items">
+      <div *ngFor="let item of items" class="carrito-item">
+        <div class="item-imagen">
+          <img [src]="item.celular.imagenUrl || 'assets/default-phone.png'" alt="{{item.celular.modelo}}">
+        </div>
+        <div class="item-info">
+          <h3>{{item.celular.modelo}}</h3>
+          <p>{{item.celular.marca.nombre}}</p>
+          <div class="item-cantidad">
+            <button (click)="actualizarCantidad(item, item.cantidad - 1)">-</button>
+            <input type="number" [(ngModel)]="item.cantidad" (change)="actualizarCantidad(item, item.cantidad)">
+            <button (click)="actualizarCantidad(item, item.cantidad + 1)">+</button>
+          </div>
+        </div>
+        <div class="item-precio">
+          <p>${{item.precioUnitario | number:'1.2-2'}} x {{item.cantidad}}</p>
+          <p class="subtotal">${{(item.precioUnitario * item.cantidad) | number:'1.2-2'}}</p>
+          <button (click)="eliminarItem(item)" class="btn-eliminar">Eliminar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="carrito-resumen">
+      <h2>Resumen del Pedido</h2>
+      <div class="resumen-detalle">
+        <p>Subtotal: <span>${{total | number:'1.2-2'}}</span></p>
+        <p>Envío: <span>$0.00</span></p>
+        <p class="total">Total: <span>${{total | number:'1.2-2'}}</span></p>
+      </div>
+      <button (click)="procederAPagar()" class="btn-pagar">Proceder al Pago</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de éxito en compra -->
+<div class="modal-overlay" *ngIf="mostrarModalExito">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>¡Compra realizada con éxito!</h2>
+      <button (click)="mostrarModalExito = false" class="close-btn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Gracias por tu compra.</p>
+      <p>Total: ${{total | number:'1.2-2'}}</p>
+      <p>Recibirás un correo con los detalles de tu pedido.</p>
+      <div *ngFor="let item of items">
+        <p>{{item.celular.modelo}} - {{item.cantidad}} unidad(es)</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button 
+        (click)="mostrarModalExito = false; router.navigate(['/productos'])" 
+        class="btn-continue"
+      >
+        Continuar comprando
+      </button>
+    </div>
+  </div>
+</div>
