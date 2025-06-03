@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakAngularModule } from 'keycloak-angular';
 import { ProductService } from '../../../core/services/product.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -36,13 +37,34 @@ export class HeaderComponent implements OnInit {
   constructor(
     private router: Router,
     public ProductService: ProductService,
+    private authService: AuthService,
+    private keycloakServicee: KeycloakService
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.cargarMarcas();
+    this.ProductService.carrito$.subscribe(items => {
+      this.cartItemCount = this.ProductService.getCartItemCount();
+    });
+
+    this.cartItemCount = this.ProductService.getCartItemCount();
+
+    const isAuthenticated = await this.authService.isAuthenticated();
+    if (isAuthenticated) {
+      this.username = this.authService.getUsername();
+      this.isAdmin = this.authService.isAdmin();
+    }
   }
 
   brands: string[] = [];
+
+  username: string = '';
+  isAdmin: boolean = false;
+
+
+  logout() {
+    // this.authService.logout();
+  }
 
   async cargarMarcas() {
     return new Promise<void>((resolve, reject) => {
@@ -79,34 +101,35 @@ export class HeaderComponent implements OnInit {
 
   // Component method - fixed version
   async handleAccountClick() {
+    await this.router.navigate(['/infousuario']);
     console.log('handleAccountClick called');
 
-    try {
-      // Verificar si el servicio está disponible
-      if (!this.keycloakService) {
-        console.error('KeycloakService no está disponible');
-        // this.router.navigate(['/login']);
-        return;
-      }
+    // try {
+    //   // Verificar si el servicio está disponible
+    //   if (!this.keycloakService) {
+    //     console.error('KeycloakService no está disponible');
+    //     // this.router.navigate(['/login']);
+    //     return;
+    //   }
 
-      // Verificar estado de autenticación
-      const isLoggedIn = this.keycloakService.isLoggedIn();
+    //   // Verificar estado de autenticación
+    //   const isLoggedIn = this.keycloakService.isLoggedIn();
 
-      if (isLoggedIn) {
-        console.log('Usuario autenticado');
-        await this.router.navigate(['/infousuario']);
-      } else {
-        console.log('Usuario no autenticado - iniciando login');
+    //   if (isLoggedIn) {
+    //     console.log('Usuario autenticado');
+    //     await this.router.navigate(['/infousuario']);
+    //   } else {
+    //     console.log('Usuario no autenticado - iniciando login');
 
-        // Usar el método login del servicio
-        await this.keycloakService.login({
-          redirectUri: `${window.location.origin}/infousuario`
-        });
-      }
-    } catch (error) {
-      console.error('Error en la autenticación:', error);
-      this.router.navigate(['/error']);
-    }
+    //     // Usar el método login del servicio
+    //     await this.keycloakService.login({
+    //       redirectUri: `${window.location.origin}/infousuario`
+    //     });
+    //   }
+    // } catch (error) {
+    //   console.error('Error en la autenticación:', error);
+    //   this.router.navigate(['/error']);
+    // }
   }
 
   // Alternative approach - more robust
@@ -180,8 +203,12 @@ export class HeaderComponent implements OnInit {
   navigateToNewsletter() {
     this.router.navigate(['/newsletter']);
   }
-  
+
   navigateToAdmin() {
     this.router.navigate(['/adminpanel']);
+  }
+
+  irAlCarrito() {
+    this.router.navigate(['/carrito']);
   }
 }

@@ -19,13 +19,17 @@
                                 d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
                                 clip-rule="evenodd" />
                         </svg>
-                        Envíos gratis a partir de $50.000
+                        Envíos gratis a partir de $500.000
                     </span>
                 </div>
                 <div class="top-bar-right">
-                    <span class="top-bar-link">Mi Cuenta</span>
+                    <!-- header.component.html -->
+                    <span class="top-bar-link" (click)="handleAccountClick()">
+                        {{ username || 'Mi Cuenta' }}
+                    </span>
                     <span class="top-bar-link" (click)="navigateToNewsletter()">Ayuda</span>
-                    <span class="top-bar-link" (click)="navigateToAdmin()">Admin</span>
+                    <span class="top-bar-link" *ngIf="isAdmin" (click)="navigateToAdmin()">Admin</span>
+                    <span class="top-bar-link" (click)="logout()">Cerrar sesión</span>
                 </div>
             </div>
         </div>
@@ -95,7 +99,7 @@
                 </button>
 
                 <!-- Cart -->
-                <button class="cart-button">
+                <button class="cart-button" (click)="irAlCarrito()">
                     <svg [class]="'action-icon ' + (isScrolled ? 'dark-icon' : 'light-icon')" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17M17 13v4a2 2 0 01-2 2H9a2 2 0 01-2-2v-4m8 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01" />
@@ -190,6 +194,13 @@
                     </svg>
                     Mi Cuenta
                 </a>
+                <a (click)="navigateToAdmin()" class="footer-link">
+                    <svg class="link-icon" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    Administración
+                </a>
                 <a (click)="navigateToNewsletter()" class="footer-link">
                     <svg class="link-icon" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -203,6 +214,13 @@
                             d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
                     Ayuda
+                </a>
+                <a (click)="navigateToNewsletter()" class="footer-link">
+                    <svg class="link-icon" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    Cerrar sesión
                 </a>
             </div>
         </div>
