@@ -48,3 +48,38 @@
 <div *ngIf="!celular" class="cargando">
   <p>Cargando información del celular...</p>
 </div>
+
+<!-- Modal de confirmación de compra -->
+<div class="modal-overlay" *ngIf="mostrarModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>¡Compra realizada con éxito!</h2>
+      <button (click)="cerrarModal()" class="close-btn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Gracias por tu compra de {{celular?.modelo}}.</p>
+      <p>Total: ${{celular?.precio | number:'1.2-2'}}</p>
+      <p>Recibirás un correo con los detalles de tu pedido.</p>
+    </div>
+    <div class="modal-footer">
+      <button (click)="cerrarModal()" class="btn-continue">Continuar comprando</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación de carrito -->
+<div class="modal-overlay" *ngIf="mostrarModalCarrito">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>¡Producto agregado al carrito!</h2>
+      <button (click)="cerrarModalCarrito()" class="close-btn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>{{celular?.modelo}} se ha añadido a tu carrito de compras.</p>
+    </div>
+    <div class="modal-footer">
+      <button (click)="cerrarModalCarrito()" class="btn-continue">Seguir comprando</button>
+      <button (click)="irAlCarrito()" class="btn-carrito">Ver carrito</button>
+    </div>
+  </div>
+</div>
