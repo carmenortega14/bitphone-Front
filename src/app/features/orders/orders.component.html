@@ -1,0 +1,85 @@
+<!-- pedidos.component.html -->
+<div class="pedidos-container">
+  <h1>Historial de Compras</h1>
+
+  <div *ngIf="cargando" class="cargando">
+    <p>Cargando pedidos...</p>
+  </div>
+
+  <div *ngIf="!cargando && pedidos.length === 0" class="sin-pedidos">
+    <p>No se encontraron pedidos</p>
+  </div>
+
+  <div *ngIf="!cargando && pedidos.length > 0">
+    <div class="lista-pedidos">
+      <div *ngFor="let pedido of pedidos" class="pedido-card" (click)="verDetalle(pedido)">
+        <div class="pedido-header">
+          <span class="pedido-id">Pedido #{{pedido.id}}</span>
+          <span class="pedido-fecha">{{formatearFecha(pedido.fecha)}}</span>
+          <span class="pedido-estado" [ngClass]="{
+            'finalizado': pedido.estado === 'Finalizado',
+            'pendiente': pedido.estado === 'Pendiente',
+            'cancelado': pedido.estado === 'Cancelado'
+          }">
+            {{pedido.estado}}
+          </span>
+        </div>
+        <div class="pedido-cliente">
+          <p><strong>Cliente:</strong> {{pedido.cliente.nombre}}</p>
+          <p><strong>Email:</strong> {{pedido.cliente.email}}</p>
+        </div>
+        <div class="pedido-resumen">
+          <p><strong>Total:</strong> ${{pedido.total | number:'1.2-2'}}</p>
+          <p><strong>Productos:</strong> {{pedido.items.length}}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de detalle -->
+    <div *ngIf="pedidoSeleccionado" class="modal-overlay" (click)="pedidoSeleccionado = null">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2>Detalle del Pedido #{{pedidoSeleccionado.id}}</h2>
+          <button (click)="pedidoSeleccionado = null" class="close-btn">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+          <div class="cliente-info">
+            <h3>Información del Cliente</h3>
+            <p><strong>Nombre:</strong> {{pedidoSeleccionado.cliente.nombre}}</p>
+            <p><strong>Email:</strong> {{pedidoSeleccionado.cliente.email}}</p>
+            <p><strong>Teléfono:</strong> {{pedidoSeleccionado.cliente.telefono || 'No proporcionado'}}</p>
+            <p><strong>Dirección de envío:</strong> {{pedidoSeleccionado.direccionEnvio}}</p>
+          </div>
+
+          <div class="pedido-info">
+            <h3>Información del Pedido</h3>
+            <p><strong>Fecha:</strong> {{formatearFecha(pedidoSeleccionado.fecha)}}</p>
+            <p><strong>Estado:</strong> {{pedidoSeleccionado.estado}}</p>
+            <p><strong>Método de pago:</strong> {{pedidoSeleccionado.metodoPago}}</p>
+          </div>
+
+          <div class="productos-list">
+            <h3>Productos</h3>
+            <div *ngFor="let item of pedidoSeleccionado.items" class="producto-item">
+              <div class="producto-imagen">
+                <img [src]="item.celular.imagenUrl || 'assets/default-phone.png'" alt="{{item.celular.modelo}}">
+              </div>
+              <div class="producto-info">
+                <h4>{{item.celular.modelo}}</h4>
+                <p>{{item.celular.marca.nombre}}</p>
+                <p><strong>Cantidad:</strong> {{item.cantidad}}</p>
+                <p><strong>Precio unitario:</strong> ${{item.precioUnitario | number:'1.2-2'}}</p>
+                <p><strong>Subtotal:</strong> ${{(item.precioUnitario * item.cantidad) | number:'1.2-2'}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="pedido-total">
+            <p><strong>Total del pedido:</strong> ${{pedidoSeleccionado.total | number:'1.2-2'}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
