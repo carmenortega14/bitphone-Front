@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ProductService } from '../../core/services/product.service';
 import { CommonModule } from '@angular/common';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-adminpanel',
@@ -37,9 +37,12 @@ export class AdminpanelComponent implements OnInit {
   celularSeleccionadoId: number | null = null;
   celularParaEditar: any = null;
   selectedFileEditar: File | null = null;
-  
+
   // Constructor
-  constructor(private productService: ProductService) { }
+  constructor(
+    private router: Router,
+    private productService: ProductService
+  ) { }
 
   // NgOnInit lifecycle hook
   ngOnInit(): void {
@@ -139,7 +142,7 @@ export class AdminpanelComponent implements OnInit {
 
   cargarCelularParaEditar(): void {
     if (!this.celularSeleccionadoId) return;
-    
+
     this.productService.obtenerCelularPorId(this.celularSeleccionadoId).subscribe({
       next: (celular) => {
         this.celularParaEditar = {
@@ -154,7 +157,7 @@ export class AdminpanelComponent implements OnInit {
 
   onFileSelectedEditar(event: any): void {
     this.selectedFileEditar = event.target.files[0];
-    
+
     // Mostrar vista previa de la nueva imagen
     if (this.selectedFileEditar) {
       const reader = new FileReader();
@@ -185,8 +188,8 @@ export class AdminpanelComponent implements OnInit {
     if (this.selectedFileEditar) {
       // Actualizar con nueva imagen
       this.productService.actualizarCelularConImagen(
-        this.celularSeleccionadoId, 
-        celularData, 
+        this.celularSeleccionadoId,
+        celularData,
         this.selectedFileEditar
       ).subscribe({
         next: () => {
@@ -199,7 +202,7 @@ export class AdminpanelComponent implements OnInit {
     } else {
       // Actualizar sin cambiar la imagen
       this.productService.actualizarCelular(
-        this.celularSeleccionadoId, 
+        this.celularSeleccionadoId,
         celularData
       ).subscribe({
         next: () => {
@@ -227,5 +230,9 @@ export class AdminpanelComponent implements OnInit {
     setTimeout(() => {
       this.mensaje = '';
     }, 5000);
+  }
+
+  irAlOrders() {
+    this.router.navigate(['/orders']);
   }
 }
