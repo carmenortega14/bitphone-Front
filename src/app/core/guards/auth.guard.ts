@@ -2,30 +2,66 @@ import { AuthGuardData, createAuthGuard } from 'keycloak-angular';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { inject } from '@angular/core';
 
+// const isAccessAllowed = async (
+//   route: ActivatedRouteSnapshot,
+//   __: RouterStateSnapshot,
+//   authData: AuthGuardData
+// ): Promise<boolean | UrlTree> => {
+//   const { authenticated, grantedRoles } = authData;
+//   console.log('Roles concedidos:', grantedRoles);
+
+//   const requiredRoles = route.data['roles'];
+//   if (!requiredRoles || requiredRoles.length === 0) {
+//     return true; // Si no hay roles requeridos, permitir acceso
+//   }
+
+//   // Obtener los roles del cliente específico (bitphone-client)
+//   const clientRoles = grantedRoles.resourceRoles['bitphone-client'] || [];
+//   console.log(clientRoles)
+  
+//   // Verificar si el usuario tiene al menos uno de los roles requeridos
+//   const hasRequiredRole = requiredRoles.some((role:any) => 
+//     clientRoles.includes(role)
+//   );
+
+//   if (authenticated && hasRequiredRole) {
+//       return true;
+//   }
+  
+//   const router = inject(Router);
+//   return router.parseUrl('/unauthorised');
+// };
+
+// export const canActivateAuthRole = createAuthGuard<CanActivateFn>(isAccessAllowed);
+
+
+
 const isAccessAllowed = async (
   route: ActivatedRouteSnapshot,
   __: RouterStateSnapshot,
   authData: AuthGuardData
 ): Promise<boolean | UrlTree> => {
   const { authenticated, grantedRoles } = authData;
+  console.log('Roles concedidos:', grantedRoles);
 
   const requiredRoles = route.data['roles'];
   if (!requiredRoles || requiredRoles.length === 0) {
     return true; // Si no hay roles requeridos, permitir acceso
   }
 
-  // Obtener los roles del cliente específico (bitphone-client)
-  const clientRoles = grantedRoles.resourceRoles['bitphone-client'] || [];
-  
+  // Obtener los roles del "realm"
+  const realmRoles = grantedRoles.realmRoles || [];
+  console.log('Roles del realm:', realmRoles);
+
   // Verificar si el usuario tiene al menos uno de los roles requeridos
-  const hasRequiredRole = requiredRoles.some((role:any) => 
-    clientRoles.includes(role)
+  const hasRequiredRole = requiredRoles.some((role: any) =>
+    realmRoles.includes(role)
   );
 
   if (authenticated && hasRequiredRole) {
-      return true;
+    return true;
   }
-  
+
   const router = inject(Router);
   return router.parseUrl('/unauthorised');
 };
